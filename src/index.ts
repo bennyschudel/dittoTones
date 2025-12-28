@@ -127,6 +127,9 @@ export class DittoTones {
       if (!color) continue;
       scale[s] = { ...color };
     }
+
+    // Force exact match for the closest shade
+    scale[shade] = parsed;
     
     return {
       inputColor: parsed, matchedShade: shade, method: 'exact',
