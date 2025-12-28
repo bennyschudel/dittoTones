@@ -1,0 +1,44 @@
+{
+  "name": "dittotones",
+  "version": "0.0.1",
+  "type": "module",
+  "description": "Transform any color into a full palette by copying the perceptual DNA of Tailwind, Radix, and other design systems",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "main": "dist/dittoTones.umd.js",
+  "module": "dist/dittoTones.es.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/dittoTones.es.js",
+      "require": "./dist/dittoTones.umd.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./ramps/tailwind": {
+      "import": "./src/ramps/tailwind.ts",
+      "types": "./src/ramps/tailwind.ts"
+    },
+    "./ramps/radix": {
+      "import": "./src/ramps/radix.ts",
+      "types": "./src/ramps/radix.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "src/ramps"
+  ],
+  "devDependencies": {
+    "@types/culori": "^4.0.1",
+    "typescript": "~5.9.3",
+    "vite": "npm:rolldown-vite@7.2.5"
+  },
+  "overrides": {
+    "vite": "npm:rolldown-vite@7.2.5"
+  },
+  "dependencies": {
+    "culori": "^4.0.2"
+  }
+}
