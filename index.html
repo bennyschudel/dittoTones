@@ -515,6 +515,9 @@
       .logo {
         display: inline-block;
 
+        --x: 0;
+        --y: 0;
+
         height: 1em;
         aspect-ratio: 1;
         position: relative;
@@ -536,7 +539,11 @@
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate(-45%, -55%);
+        transform: translate(
+          calc(-45% + (var(--x, 0) * 1em)),
+          calc(-55% + (var(--y, 0) * 1em))
+        );
+        will-change: transform;
         color: var(--c-text-alt);
         font-size: 0.3em;
         white-space: nowrap;

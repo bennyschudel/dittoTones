@@ -25,6 +25,7 @@ const copyBtn = document.getElementById('copyBtn')!;
 const toast = document.getElementById('toast')!;
 
 const face = document.querySelector<HTMLElement>('[data-face]')!;
+const logo = document.querySelector<HTMLElement>('.logo');
 const eyes = [
   '✿',
   '╹',
@@ -114,6 +115,46 @@ function setRandomFace() {
 }
 
 setRandomFace();
+
+function clamp(value: number, min: number, max: number) {
+  return Math.min(max, Math.max(min, value));
+}
+
+function setLogoPointerVars(clientX: number, clientY: number) {
+  if (!logo) return;
+  const rect = logo.getBoundingClientRect();
+  if (rect.width <= 0 || rect.height <= 0) return;
+
+  const cx = rect.left + rect.width / 2;
+  const cy = rect.top + rect.height / 2;
+
+  // Normalize against viewport edges so +/-1 is reached near the browser sides,
+  // not after moving a few pixels across the logo.
+  const maxDx = Math.max(cx, window.innerWidth - cx);
+  const maxDy = Math.max(cy, window.innerHeight - cy);
+
+  const x = maxDx > 0 ? clamp((clientX - cx) / maxDx, -1, 1) : 0;
+  const y = maxDy > 0 ? clamp((clientY - cy) / maxDy, -1, 1) : 0;
+
+  logo.style.setProperty('--x', x.toFixed(3));
+  logo.style.setProperty('--y', y.toFixed(3));
+}
+
+function resetLogoPointerVars() {
+  if (!logo) return;
+  logo.style.setProperty('--x', '0');
+  logo.style.setProperty('--y', '0');
+}
+
+window.addEventListener(
+  'pointermove',
+  (e) => {
+    setLogoPointerVars(e.clientX, e.clientY);
+  },
+  { passive: true }
+);
+
+window.addEventListener('blur', () => resetLogoPointerVars());
 
 document.addEventListener('click', () => {
   setRandomFace();
