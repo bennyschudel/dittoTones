@@ -205,7 +205,7 @@ function renderRampBar(rampName: string, matchedShade: string): string {
       const bg = colors[s] || '#000';
       const fg = isLightColor(bg) ? '#18181b' : '#fafafa';
       const matched = s === matchedShade ? 'matched' : '';
-      return `<div class="shade-block ${matched}" style="background:${bg};color:${fg}">${s}</div>`;
+      return `<div class="shade-block ${matched}" style="--cc:${bg};color:${fg}">${s}</div>`;
     })
     .join('');
 }
@@ -263,7 +263,7 @@ function renderBlendViz(result: ReturnType<typeof ditto.generate>) {
     const div = document.createElement('div');
     div.className = `shade ${isLightColor(hex) ? 'dark-text' : 'light-text'}`;
     if (shade === result.matchedShade) div.classList.add('matched');
-    div.style.background = hex;
+    div.style.setProperty('--cc', css);
     div.innerHTML = `<div class="shade__label"><span class="shade-key">${shade}</span><span class="shade-value">${hex}</span></div>`;
     div.title = `Click to copy ${css}`;
     div.addEventListener('click', () => {
@@ -361,7 +361,7 @@ function updatePalette(color: string) {
       const div = document.createElement('div');
       div.className = `shade ${isLightColor(hex) ? 'dark-text' : 'light-text'}`;
       if (shade === result.matchedShade) div.classList.add('matched');
-      div.style.background = hex;
+      div.style.setProperty('--cc', css);
       div.innerHTML = `<div class="shade__label"><span class="shade-key">${shade}</span><span class="shade-value">${hex}</span></div>`;
       div.title = `Click to copy ${css}`;
       div.addEventListener('click', () => {

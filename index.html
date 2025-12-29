@@ -220,7 +220,7 @@
         cursor: pointer;
         background: transparent;
         margin-right: -1px;
-        border-radius: 0;
+        border-radius: 2px;
       }
       input[type='color']::-webkit-color-swatch-wrapper {
         padding: 0;
@@ -352,15 +352,16 @@
         height: 2rem;
         display: flex;
       }
-      .ramp-bar .shade-block {
+      .shade-block {
         flex: 1;
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 0.9rem;
         line-height: 1;
+        background: var(--cc);
       }
-      .ramp-bar .shade-block.matched {
+      .shade-block.matched {
         z-index: 1;
         transform: scale(1.1);
       }
@@ -411,6 +412,7 @@
         cursor: pointer;
         transition: transform 0.15s;
         position: relative;
+        background: var(--cc);
       }
       .shade__label {
         background: var(--c-bg);
