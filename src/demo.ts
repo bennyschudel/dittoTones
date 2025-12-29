@@ -25,9 +25,57 @@ const copyBtn = document.getElementById('copyBtn')!;
 const toast = document.getElementById('toast')!;
 
 const face = document.querySelector<HTMLElement>('[data-face]')!;
-const eyes = ['✿', '╹', 'T', '个', '≖', 'ꈍ', 'ʘ', '◕', '•', 'ಠ', '눈', '◉', '◔', 'Φ', '⊙', '⨀', '☉', 'σ', 'ф', '￣', '✧'] as const;
-const mouths = ['ʖ̯ ','ٹ','〇','θ','ᴥ', 'ゝ', 'з','ᴗ', '‿', '_', 'ω', '▽', '△', '෴', 'o', '.', '﹏', 'ᆺ', 'ロ','Д', '︿', '～', '∀', '_ʖ', '(ｴ)'] as const;
-const cheeks = ['♪','˘', '˚', '•', '♥', '?'] as const;
+const eyes = [
+  '✿',
+  '╹',
+  'T',
+  '个',
+  '≖',
+  'ꈍ',
+  'ʘ',
+  '◕',
+  '•',
+  'ಠ',
+  '눈',
+  '◉',
+  '◔',
+  'Φ',
+  '⊙',
+  '⨀',
+  '☉',
+  'σ',
+  'ф',
+  '￣',
+  '✧',
+] as const;
+const mouths = [
+  'ʖ̯ ',
+  'ٹ',
+  '〇',
+  'θ',
+  'ᴥ',
+  'ゝ',
+  'з',
+  'ᴗ',
+  '‿',
+  '_',
+  'ω',
+  '▽',
+  '△',
+  '෴',
+  'o',
+  '.',
+  '﹏',
+  'ᆺ',
+  'ロ',
+  'Д',
+  '︿',
+  '～',
+  '∀',
+  '_ʖ',
+  '(ｴ)',
+] as const;
+const cheeks = ['♪', '˘', '˚', '•', '♥', '?'] as const;
 
 type Eye = (typeof eyes)[number];
 
@@ -37,7 +85,6 @@ const MISMATCH_EYE_PROB = 0.05;
 function pickOne<T>(arr: readonly T[]): T {
   return arr[Math.floor(Math.random() * arr.length)]!;
 }
-
 
 function pickDifferentEye(exclude: Eye): Eye {
   const options = eyes.filter((e): e is Eye => e !== exclude);
@@ -137,7 +184,11 @@ function formatColor(color: Oklch, format: ColorFormat): string {
   }
 }
 
-function toCSS(result: ReturnType<typeof ditto.generate>, name = 'color', format: ColorFormat = 'oklch') {
+function toCSS(
+  result: ReturnType<typeof ditto.generate>,
+  name = 'color',
+  format: ColorFormat = 'oklch'
+) {
   const info = result.sources.map((r) => `${r.name} (${(r.weight * 100).toFixed(0)}%)`).join(' + ');
   const lines = [`  /* ${name}: ${result.method} from ${info} @ shade ${result.matchedShade} */`];
   for (const [shade, color] of Object.entries(result.scale)) {
@@ -199,7 +250,8 @@ function renderBlendViz(result: ReturnType<typeof ditto.generate>) {
   const paletteBar = document.createElement('div');
   paletteBar.className = 'ramp-bar blend-palette-bar';
 
-  paletteLabel.textContent = result.method === 'exact' ? '' : getPaletteNameFromTitle(paletteTitle.textContent);
+  paletteLabel.textContent =
+    result.method === 'exact' ? '' : getPaletteNameFromTitle(paletteTitle.textContent);
 
   for (const shade of shades) {
     const oklchColor = result.scale[shade];

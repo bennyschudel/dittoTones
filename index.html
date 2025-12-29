@@ -4,19 +4,28 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>dittoTones Demo</title>
-    <meta name="description" content="A mini-library to transform any color into a full palette, based on the perceptual 'DNA' of any design system." />
-    
+    <meta
+      name="description"
+      content="A mini-library to transform any color into a full palette, based on the perceptual 'DNA' of any design system."
+    />
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://meodai.github.io/dittoTones/" />
     <meta property="og:title" content="dittoTones" />
-    <meta property="og:description" content="A mini-library to transform any color into a full palette, based on the perceptual 'DNA' of any design system." />
+    <meta
+      property="og:description"
+      content="A mini-library to transform any color into a full palette, based on the perceptual 'DNA' of any design system."
+    />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="https://meodai.github.io/dittoTones/" />
     <meta property="twitter:title" content="dittoTones" />
-    <meta property="twitter:description" content="A mini-library to transform any color into a full palette, based on the perceptual 'DNA' of any design system." />
+    <meta
+      property="twitter:description"
+      content="A mini-library to transform any color into a full palette, based on the perceptual 'DNA' of any design system."
+    />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -56,10 +65,12 @@
         }
       }
 
-      a, button, select, input {
+      a,
+      button,
+      select,
+      input {
         color: var(--c-interactive);
       }
-
 
       a {
         color: var(--c-text-alt);
@@ -141,7 +152,6 @@
         align-items: center;
         gap: 1.5rem;
         flex-wrap: wrap;
-        
       }
       .color-input-wrapper {
         display: flex;
@@ -239,7 +249,7 @@
       .ramp-row {
         display: flex;
         align-items: center;
-        min-height: 2.5rem
+        min-height: 2.5rem;
       }
       .ramp-label {
         width: var(--s-inset);
@@ -264,7 +274,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: .9rem;
+        font-size: 0.9rem;
         line-height: 1;
       }
       .ramp-bar .shade-block.matched {
@@ -401,19 +411,18 @@
           border-radius: 50%;
           background: var(--c-hightlight);
         }
-
       }
       .logo__face {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-45%, -55%);
-          color: var(--c-text-alt);
-          font-size: 0.3em;
-          white-space: nowrap;
-          letter-spacing: 0;
-          font-family: monospace;
-          font-weight: 300;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-45%, -55%);
+        color: var(--c-text-alt);
+        font-size: 0.3em;
+        white-space: nowrap;
+        letter-spacing: 0;
+        font-family: monospace;
+        font-weight: 300;
       }
       .description {
         max-width: 50ch;
@@ -433,7 +442,8 @@
         DittoTones
       </h1>
       <p class="subtitle">
-        A mini-library to transform any color into a full color ramp, based on the perceptual "DNA" of any design system. · 
+        A mini-library to transform any color into a full color ramp, based on the perceptual "DNA"
+        of any design system. ·
         <a href="https://github.com/meodai/dittoTones" class="github-link">View on GitHub</a>
       </p>
 
@@ -461,8 +471,12 @@
       <div class="section">
         <div class="palette-header">
           <h2 class="section__title" id="paletteTitle">Generated Palette</h2>
-          <div style="display: flex; gap: 0.5rem; align-items: center;">
-            <select id="formatSelector" class="ramp-selector" style="padding: 0.5rem 0.75rem; font-size: 0.875rem;">
+          <div style="display: flex; gap: 0.5rem; align-items: center">
+            <select
+              id="formatSelector"
+              class="ramp-selector"
+              style="padding: 0.5rem 0.75rem; font-size: 0.875rem"
+            >
               <option value="oklch">oklch</option>
               <option value="oklab">oklab</option>
               <option value="hex">hex</option>
