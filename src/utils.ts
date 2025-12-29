@@ -12,7 +12,7 @@ export function formatCssRounded(
 
   let roundNumber = round(decimals);
 
-  const roundedStr = cssStr.replace(/(\d?\.\d+)/g, (match) => {
+  const roundedStr = cssStr.replace(/([\d\.]+\d*)/g, (match) => {
     return roundNumber(parseFloat(match)).toFixed(decimals);
   });
 
