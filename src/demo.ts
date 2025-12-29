@@ -142,6 +142,19 @@ function renderBlendViz(result: ReturnType<typeof ditto.generate>) {
   blendViz.innerHTML = '';
   const shades = getShades();
 
+  const src1 = result.sources[0];
+  const src2 = result.sources[1];
+
+  const row1 = document.createElement('div');
+  row1.className = 'ramp-row';
+  if (src1) {
+    const w1 = result.sources.length === 2 ? src1.weight : 1;
+    row1.innerHTML = `
+      <div class="ramp-label">${src1.name}<br><span class="weight">${(w1 * 100).toFixed(0)}%</span></div>
+      <div class="ramp-bar">${renderRampBar(src1.name, result.matchedShade)}</div>
+    `;
+  }
+
   const paletteRow = document.createElement('div');
   paletteRow.className = 'ramp-row blend-palette-row';
 
@@ -176,38 +189,19 @@ function renderBlendViz(result: ReturnType<typeof ditto.generate>) {
   paletteRow.appendChild(paletteLabel);
   paletteRow.appendChild(paletteBar);
 
-  if (result.method === 'blend' && result.sources.length === 2) {
-    const [src1, src2] = result.sources;
-
-    const row1 = document.createElement('div');
-    row1.className = 'ramp-row';
-    row1.innerHTML = `
-      <div class="ramp-label">${src1.name}<br><span class="weight">${(src1.weight * 100).toFixed(0)}%</span></div>
-      <div class="ramp-bar">${renderRampBar(src1.name, result.matchedShade)}</div>
-    `;
-    blendViz.appendChild(row1);
-
-    blendViz.appendChild(paletteRow);
-
-    const row2 = document.createElement('div');
-    row2.className = 'ramp-row';
-    row2.innerHTML = `
-      <div class="ramp-label">${src2.name}<br><span class="weight">${(src2.weight * 100).toFixed(0)}%</span></div>
+  const row3 = document.createElement('div');
+  row3.className = 'ramp-row';
+  if (src2) {
+    const w2 = result.sources.length === 2 ? src2.weight : 0;
+    row3.innerHTML = `
+      <div class="ramp-label">${src2.name}<br><span class="weight">${(w2 * 100).toFixed(0)}%</span></div>
       <div class="ramp-bar">${renderRampBar(src2.name, result.matchedShade)}</div>
     `;
-    blendViz.appendChild(row2);
-  } else {
-    const src = result.sources[0];
-    const row = document.createElement('div');
-    row.className = 'ramp-row';
-    row.innerHTML = `
-      <div class="ramp-label">${src.name}<br><span class="weight">100%</span></div>
-      <div class="ramp-bar">${renderRampBar(src.name, result.matchedShade)}</div>
-    `;
-    blendViz.appendChild(row);
-
-    blendViz.appendChild(paletteRow);
   }
+
+  blendViz.appendChild(row1);
+  blendViz.appendChild(paletteRow);
+  blendViz.appendChild(row3);
 }
 
 function sanitizeName(name: string): string {

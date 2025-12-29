@@ -233,6 +233,7 @@
       .ramp-row {
         display: flex;
         align-items: center;
+        min-height: 2.5rem
       }
       .ramp-label {
         width: var(--s-inset);
@@ -346,7 +347,7 @@
         }
       }
       .css-output {
-        margin-top: 4rem;
+        margin-top: 2rem;
         background: #0a0a0a;
         padding: 1rem;
         font-size: 0.8rem;
@@ -368,6 +369,7 @@
         opacity: 0;
         transition: all 0.3s;
         color: #fff;
+        z-index: 999;
       }
       .toast.show {
         transform: translateX(-50%) translateY(0);
@@ -452,8 +454,8 @@
           <h2 class="section__title" id="paletteTitle">Generated Palette</h2>
           <button class="copy-btn" id="copyBtn">Copy CSS</button>
         </div>
-        <div class="palette-grid" id="paletteGrid"></div>
         <pre class="css-output" id="cssOutput"></pre>
+        <div class="palette-grid" id="paletteGrid"></div>
       </div>
 
       <aside class="section">
