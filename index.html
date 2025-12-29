@@ -28,7 +28,35 @@
       :root {
         --font-ui: 'Google Sans Flex', system-ui, -apple-system, sans-serif;
         --font-input: 'Xanh Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-        font-weight: 100;
+        --font-ui: 'Xanh Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        font-weight: 400;
+
+        --c-purple: #a855f7;
+        --c-black: #202126;
+        --c-grey: #a1a1a1;
+        --c-white: #fafafa;
+        --c-red: tomato;
+        --c-green: mediumspringgreen;
+
+        --c-text: var(--c-grey);
+        --c-text-alt: var(--c-white);
+        --c-bg: var(--c-black);
+        --c-hightlight: var(--c-purple);
+        --c-interactive: var(--c-white);
+
+        --s-inset: 8rem;
+        line-height: 1.5;
+
+
+      }
+
+      a, button, select, input {
+        color: var(--c-interactive);
+      }
+
+      ::selection {
+        background: var(--c-purple);
+        color: var(--c-white);
       }
 
       * {
@@ -50,51 +78,44 @@
       samp {
         font-family: inherit;
       }
+
       body {
         font-family: var(--font-ui);
-        background: #fff;
-        color: #202126;
-        min-height: 100vh;
-        padding: 2rem;
-      }
-
-      /* Force-load input font early (some browsers defer form-control font fetches) */
-      body::after {
-        content: '0';
-        font-family: var(--font-input);
-        position: absolute;
-        width: 0;
-        height: 0;
-        overflow: hidden;
-        opacity: 0;
-        pointer-events: none;
+        background: var(--c-bg);
+        color: var(--c-text);
+        padding: max(15vmin, 2rem);
       }
 
       svg {
         display: block;
         overflow: visible;
       }
+
       .container {
-        max-width: 900px;
+        max-width: 55rem;
         margin: 0 auto;
       }
+
       h1 {
-        font-size: 3.5rem;
-        font-weight: 100;
+        font-size: 5rem;
         margin-bottom: 0.5rem;
-        color: #a855f7;
+        color: var(--c-hightlight);
+        letter-spacing: -0.1em;
+
+        user-select: none;
       }
-      h1,
       h2 {
-        font-variation-settings: "slnt" 0, "GRAD" 0, "ROND" 100;
+        color: var(--c-text-alt);
       }
       .subtitle {
-        color: #a1a1a1;
         margin-bottom: 2rem;
         max-width: 45ch;
         line-height: 1.5;
         margin-top: 2em;
+
+        margin-left: var(--s-inset);
       }
+
       .section--picker {
         margin-bottom: 1.5rem;
         display: flex;
@@ -142,7 +163,6 @@
         padding: 0.25rem 0.75rem;
         border-radius: 9999px;
         font-size: 0.75rem;
-        font-weight: 100;
         text-transform: uppercase;
         letter-spacing: 0.05em;
         margin-bottom: 0.45rem;
@@ -163,7 +183,6 @@
         font-size: 0.9rem;
       }
       .ramp-name {
-        font-weight: 200;
       }
       .ramp-weight {
         color: #a855f7;
@@ -187,7 +206,6 @@
       }
       .section__title {
         font-size: 1.5rem;
-        font-weight: 600;
         margin-bottom: 1rem;
       }
       .blend-viz {
@@ -204,13 +222,11 @@
       .ramp-label {
         width: 100px;
         font-size: 0.85rem;
-        font-weight: 100;
         text-align: right;
         flex-shrink: 0;
       }
       .ramp-label .weight {
         color: #a855f7;
-        font-weight: 400;
         font-size: 0.8rem;
         font-family: var(--font-input);
       }
@@ -225,7 +241,6 @@
         align-items: center;
         justify-content: center;
         font-size: 0.6rem;
-        font-weight: 600;
       }
       .ramp-bar .shade-block.matched {
         z-index: 1;
@@ -289,7 +304,6 @@
       .shade.matched {
       }
       .shade-key {
-        font-weight: 600;
         opacity: 0.9;
         display: flex;
         gap: 0.25rem;
@@ -334,15 +348,6 @@
         transform: translateX(-50%) translateY(0);
         opacity: 1;
       }
-      @media (max-width: 640px) {
-        .ramp-label {
-          width: 70px;
-          font-size: 0.75rem;
-        }
-        .blend-indicator {
-          margin-left: 86px;
-        }
-      }
 
       .logo {
         display: inline-block;
@@ -361,16 +366,19 @@
           width: 120%;
           height: 120%;
           border-radius: 50%;
-          background: #a855f7;
+          background: var(--c-hightlight);
         }
 
-        svg {
+      }
+      .logo__face {
           position: absolute;
           top: 50%;
           left: 50%;
           transform: translate(-45%, -55%);
-          width: 150%;
-        }
+          color: var(--c-text-alt);
+          font-size: 0.3em;
+          white-space: nowrap;
+          letter-spacing: 0;
       }
       .github-link {
         color: inherit;
@@ -392,30 +400,12 @@
     <div class="container">
       <h1>
         <span class="logo">
-          <svg viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg">
-            <!-- eyes -->
-            <ellipse cx="45" cy="40" rx="6" ry="8" fill="#000" />
-            <ellipse cx="75" cy="40" rx="6" ry="8" fill="#000" />
-
-            <!-- eye shine -->
-            <circle cx="47" cy="37" r="2" fill="#fff" />
-            <circle cx="77" cy="37" r="2" fill="#fff" />
-
-            <!-- mouth -->
-            <path
-              d="M55 55
-             Q60 60 65 55"
-              stroke="#000"
-              stroke-width="3"
-              fill="none"
-              stroke-linecap="round"
-            />
-          </svg>
+          <pre class="logo__face" data-face>ꈍᴗꈍ</pre>
         </span>
-        dittoTones
+        DittoTones
       </h1>
       <p class="subtitle">
-        A mini-library to transform any color into a full palette, based on the perceptual "DNA" of any design system. · 
+        A mini-library to transform any color into a full color ramp, based on the perceptual "DNA" of any design system. · 
         <a href="https://github.com/meodai/dittoTones" class="github-link">View on GitHub</a>
       </p>
 

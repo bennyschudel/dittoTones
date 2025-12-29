@@ -20,6 +20,52 @@ const paletteTitle = document.getElementById('paletteTitle')!;
 const copyBtn = document.getElementById('copyBtn')!;
 const toast = document.getElementById('toast')!;
 
+const face = document.querySelector<HTMLElement>('[data-face]')!;
+const eyes = ['ꈍ', 'ʘ', '◕', '•', 'ಠ', '눈', '◉', '◔', 'Φ', '⊙', '⨀', '☉', 'σ', 'ф'] as const;
+const mouths = ['ᴗ', '‿', '_', 'ω', '▽', '△', '෴', 'o', '.', '﹏', 'ᆺ'] as const;
+const cheeks = ['˘', '˚', '•', '♥'] as const;
+
+const CHEEK_PROB = 0.05;
+const MISMATCH_EYE_PROB = 0.05;
+
+function pickOne<T>(arr: readonly T[]): T {
+  return arr[Math.floor(Math.random() * arr.length)]!;
+}
+
+
+function pickDifferentEye(exclude: string): string {
+  const options = eyes.filter((e) => e !== exclude);
+  return pickOne(options);
+}
+
+function buildFace(): string {
+  let leftEye = pickOne(eyes);
+  let rightEye = leftEye;
+
+  // Very rare: one eye differs
+  if (Math.random() < MISMATCH_EYE_PROB) {
+    if (Math.random() < 0.5) leftEye = pickDifferentEye(rightEye);
+    else rightEye = pickDifferentEye(leftEye);
+  }
+
+  const mouth = pickOne(mouths);
+
+  const hasCheek = Math.random() < CHEEK_PROB;
+  const cheek = hasCheek ? pickOne(cheeks) : '';
+
+  return `${leftEye}${mouth}${rightEye}${cheek}`;
+}
+
+function setRandomFace() {
+  face.textContent = buildFace();
+}
+
+setRandomFace();
+
+document.addEventListener('click', () => {
+  setRandomFace();
+});
+
 function getShades(): string[] {
   return currentRampSet === 'tailwind'
     ? ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900', '950']
