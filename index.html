@@ -46,8 +46,14 @@
 
         --s-inset: 8rem;
         line-height: 1.5;
+      }
 
-
+      @media (prefers-color-scheme: light) {
+        :root {
+          --c-text-alt: #111111;
+          --c-bg: #fafafa;
+          --c-interactive: #111111;
+        }
       }
 
       a, button, select, input {
@@ -208,7 +214,7 @@
         background: #27272a;
         border: 1px solid #3f3f46;
         padding: 0.5rem 1rem;
-        color: var(--c-text-alt);
+        color: var(--c-white);
         font-size: 0.9rem;
         cursor: pointer;
       }
