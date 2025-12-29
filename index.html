@@ -35,7 +35,7 @@
         color: #a1a1a1;
         margin-bottom: 2rem;
       }
-      .picker-section {
+      .section--picker {
         margin-bottom: 1.5rem;
         display: flex;
         align-items: center;
@@ -125,7 +125,7 @@
       .blend-section {
         margin-top: 4rem;
       }
-      .blend-title {
+      .section__title {
         font-size: 1.5rem;
         font-weight: 100;
         margin-bottom: 1rem;
@@ -177,7 +177,7 @@
         z-index: 2;
       }
 
-      .palette-section {
+      .section {
         margin-top: 5rem;
       }
       .palette-header {
@@ -185,10 +185,6 @@
         justify-content: space-between;
         align-items: center;
         margin-bottom: 2rem;
-      }
-      .palette-title {
-        font-size: 1.5rem;
-        font-weight: 100;
       }
       .copy-btn {
         background: #27272a;
@@ -324,6 +320,11 @@
       .github-link:hover {
         color: #a855f7;
       }
+      .description {
+        max-width: 50ch;
+        margin-bottom: 2rem;
+        line-height: 1.5;
+      }
     </style>
   </head>
   <body>
@@ -348,7 +349,7 @@
         <a href="https://github.com/meodai/dittoTones" class="github-link">View on GitHub</a>
       </p>
 
-      <div class="picker-section">
+      <div class="section section--picker">
         <div class="color-input-wrapper">
           <input type="color" id="colorPicker" value="#55F7C1" />
           <input
@@ -369,20 +370,31 @@
         </select>
       </div>
 
-      <div class="blend-section">
-        <div class="blend-title">Source Ramps</div>
+      <div class="section">
+        <h2 class="section__title">Source Ramps</h2>
         <div id="blendViz" class="blend-viz"></div>
       </div>
 
-      <div class="palette-section">
+      <div class="section">
         <div class="palette-header">
-          <h2 class="palette-title" id="paletteTitle">Generated Palette</h2>
+          <h2 class="section__title" id="paletteTitle">Generated Palette</h2>
           <button class="copy-btn" id="copyBtn">Copy CSS</button>
         </div>
         <div class="palette-grid" id="paletteGrid"></div>
         <pre class="css-output" id="cssOutput"></pre>
       </div>
+
+      <aside class="section">
+        <h2 class="section__title">How it works</h2>
+        <p class="description">
+          Most palette generators for popular frameworks either match a single color or ignore the careful work that was put
+          into creating the original palettes entirely. dittoTones analyzes the perceptual "DNA" (Lightness/Chroma curves) of
+          systems like Tailwind or Radix and interpolates your target hue onto them.
+        </p>
+      </aside>
     </div>
+
+
 
     <div class="toast" id="toast">Copied to clipboard!</div>
     <script type="module" src="/src/demo.ts"></script>
