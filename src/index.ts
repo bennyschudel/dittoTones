@@ -1,10 +1,4 @@
-import {
-  oklch,
-  parse,
-  interpolate,
-  differenceEuclidean,
-  type Oklch,
-} from 'culori';
+import { oklch, parse, interpolate, differenceEuclidean, type Oklch } from 'culori';
 
 export type Ramp = Record<string, Oklch>;
 export type { Oklch };
@@ -39,7 +33,7 @@ export class DittoTones {
     // Validate keys
     for (const [name, ramp] of this.ramps) {
       const keys = Object.keys(ramp);
-      if (keys.length !== this.shadeKeys.length || !keys.every(k => this.shadeKeys.includes(k))) {
+      if (keys.length !== this.shadeKeys.length || !keys.every((k) => this.shadeKeys.includes(k))) {
         throw new Error(`Ramp ${name} has inconsistent keys`);
       }
     }
@@ -51,8 +45,14 @@ export class DittoTones {
   private findBestNeutralRamp(): string {
     let best = { name: '', avgChroma: Infinity };
     for (const [rampName, ramp] of this.ramps) {
-      let total = 0, count = 0;
-      for (const c of Object.values(ramp)) { if (c) { total += c.c ?? 0; count++; } }
+      let total = 0,
+        count = 0;
+      for (const c of Object.values(ramp)) {
+        if (c) {
+          total += c.c ?? 0;
+          count++;
+        }
+      }
       const avg = count > 0 ? total / count : Infinity;
       if (avg < best.avgChroma) best = { name: rampName, avgChroma: avg };
     }
@@ -96,23 +96,23 @@ export class DittoTones {
   private findSecondClosest(color: Oklch, shade: string, excludeRamp: string) {
     const targetHue = color.h ?? 0;
     let best: { rampName: string; diff: number; hueDist: number } | null = null;
-    
+
     for (const [rampName, ramp] of this.ramps) {
       if (rampName === excludeRamp) continue;
       const rampColor = ramp[shade];
       if (!rampColor || (rampColor.c ?? 0) < DittoTones.NEUTRAL_CHROMA) continue;
-      
+
       const rampHue = rampColor.h ?? 0;
       let hueDist = Math.abs(targetHue - rampHue);
       if (hueDist > 180) hueDist = 360 - hueDist;
-      
+
       const distance = this.diff(color, rampColor as Oklch);
-      
+
       if (!best || hueDist < best.hueDist) {
         best = { rampName, diff: distance, hueDist };
       }
     }
-    
+
     return best ? { rampName: best.rampName, diff: best.diff } : null;
   }
 
@@ -120,7 +120,7 @@ export class DittoTones {
     const rampName = this.neutralRampName;
     const ramp = this.ramps.get(rampName)!;
     const shade = this.findClosestShadeInRamp(parsed, ramp);
-    
+
     // For neutrals, just use the ramp as-is without L/C correction
     const scale: Record<string, Oklch> = {};
     for (const [s, color] of Object.entries(ramp)) {
@@ -130,33 +130,49 @@ export class DittoTones {
 
     // Force exact match for the closest shade
     scale[shade] = parsed;
-    
+
     return {
-      inputColor: parsed, matchedShade: shade, method: 'exact',
+      inputColor: parsed,
+      matchedShade: shade,
+      method: 'exact',
       sources: [{ name: rampName, diff: 0, weight: 1 }],
       scale,
     };
   }
 
-  private generateFromSingleRamp(parsed: Oklch, rampName: string, shade: string, diff: number): GenerateResult {
+  private generateFromSingleRamp(
+    parsed: Oklch,
+    rampName: string,
+    shade: string,
+    diff: number
+  ): GenerateResult {
     const ramp = this.ramps.get(rampName)!;
     const scale = this.buildScale(ramp, parsed, shade);
     return {
-      inputColor: parsed, matchedShade: shade,
+      inputColor: parsed,
+      matchedShade: shade,
       method: diff < DittoTones.EXACT_THRESHOLD ? 'exact' : 'single',
       sources: [{ name: rampName, diff, weight: 1 }],
       scale,
     };
   }
 
-  private generateBlended(parsed: Oklch, shade: string, ramp1Name: string, diff1: number, ramp2Name: string, diff2: number): GenerateResult {
+  private generateBlended(
+    parsed: Oklch,
+    shade: string,
+    ramp1Name: string,
+    diff1: number,
+    ramp2Name: string,
+    diff2: number
+  ): GenerateResult {
     const ramp1 = this.ramps.get(ramp1Name)!;
     const ramp2 = this.ramps.get(ramp2Name)!;
-    const t = (diff1 + diff2) > 0 ? diff1 / (diff1 + diff2) : 0.5;
+    const t = diff1 + diff2 > 0 ? diff1 / (diff1 + diff2) : 0.5;
 
     const blendedRamp: Ramp = {};
     for (const shadeKey of this.shadeKeys) {
-      const c1 = ramp1[shadeKey] as Oklch, c2 = ramp2[shadeKey] as Oklch;
+      const c1 = ramp1[shadeKey] as Oklch,
+        c2 = ramp2[shadeKey] as Oklch;
       if (!c1 || !c2) continue;
       blendedRamp[shadeKey] = interpolate([c1, c2], 'oklch')(t) as Oklch;
     }
@@ -164,7 +180,9 @@ export class DittoTones {
     const scale = this.buildScale(blendedRamp, parsed, shade);
 
     return {
-      inputColor: parsed, matchedShade: shade, method: 'blend',
+      inputColor: parsed,
+      matchedShade: shade,
+      method: 'blend',
       sources: [
         { name: ramp1Name, diff: diff1, weight: 1 - t },
         { name: ramp2Name, diff: diff2, weight: t },
@@ -200,7 +218,7 @@ export class DittoTones {
     const deltaL = target.l - generated.l;
     const targetC = target.c ?? 0;
     const generatedC = generated.c ?? 0;
-    
+
     let scaleC: (c: number) => number;
     if (generatedC > DittoTones.NEUTRAL_CHROMA) {
       const ratio = targetC / generatedC;
@@ -223,6 +241,10 @@ export class DittoTones {
     return scale;
   }
 
-  get rampNames() { return Array.from(this.ramps.keys()); }
-  get shades() { return this.shadeKeys; }
+  get rampNames() {
+    return Array.from(this.ramps.keys());
+  }
+  get shades() {
+    return this.shadeKeys;
+  }
 }

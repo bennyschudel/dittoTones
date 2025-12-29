@@ -8,7 +8,7 @@ export const tailwindRamps = new Map<string, Ramp>(
     key,
     Object.fromEntries(
       Object.entries(value).map(([shade, color]) => [shade, oklch(parse(color)) as Oklch])
-    )
+    ),
   ])
 );
 

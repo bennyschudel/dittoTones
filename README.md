@@ -51,10 +51,11 @@ for (const [shade, color] of Object.entries(result.scale)) {
 
 ```typescript
 interface GenerateResult {
-  inputColor: Oklch;           // Parsed input color
-  matchedShade: string;        // e.g. "500"
+  inputColor: Oklch; // Parsed input color
+  matchedShade: string; // e.g. "500"
   method: 'exact' | 'single' | 'blend';
-  sources: {                   // Which ramps were used
+  sources: {
+    // Which ramps were used
     name: string;
     diff: number;
     weight: number;
@@ -78,11 +79,14 @@ import { DittoTones } from 'dittotones';
 import { parse, oklch, type Oklch } from 'culori';
 
 const customRamps = new Map([
-  ['brand', {
-    '50': oklch(parse('oklch(98% 0.01 250)')) as Oklch,
-    '500': oklch(parse('#3B82F6')) as Oklch,
-    '950': oklch(parse('oklch(25% 0.05 250)')) as Oklch,
-  }],
+  [
+    'brand',
+    {
+      '50': oklch(parse('oklch(98% 0.01 250)')) as Oklch,
+      '500': oklch(parse('#3B82F6')) as Oklch,
+      '950': oklch(parse('oklch(25% 0.05 250)')) as Oklch,
+    },
+  ],
 ]);
 
 const ditto = new DittoTones({ ramps: customRamps });

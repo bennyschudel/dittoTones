@@ -21,7 +21,7 @@ const copyBtn = document.getElementById('copyBtn')!;
 const toast = document.getElementById('toast')!;
 
 function getShades(): string[] {
-  return currentRampSet === 'tailwind' 
+  return currentRampSet === 'tailwind'
     ? ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900', '950']
     : ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
 }
@@ -55,7 +55,7 @@ function getRampColors(rampName: string): Record<string, string> {
 }
 
 function toCSS(result: ReturnType<typeof ditto.generate>, name = 'color') {
-  const info = result.sources.map(r => `${r.name} (${(r.weight * 100).toFixed(0)}%)`).join(' + ');
+  const info = result.sources.map((r) => `${r.name} (${(r.weight * 100).toFixed(0)}%)`).join(' + ');
   const lines = [`  /* ${name}: ${result.method} from ${info} @ shade ${result.matchedShade} */`];
   for (const [shade, color] of Object.entries(result.scale)) {
     lines.push(`  --${name}-${shade}: ${formatCss(color)};`);
@@ -66,19 +66,21 @@ function toCSS(result: ReturnType<typeof ditto.generate>, name = 'color') {
 function renderRampBar(rampName: string, matchedShade: string): string {
   const colors = getRampColors(rampName);
   const shades = getShades();
-  return shades.map(s => {
-    const bg = colors[s] || '#000';
-    const fg = isLightColor(bg) ? '#18181b' : '#fafafa';
-    const matched = s === matchedShade ? 'matched' : '';
-    return `<div class="shade-block ${matched}" style="background:${bg};color:${fg}">${s}</div>`;
-  }).join('');
+  return shades
+    .map((s) => {
+      const bg = colors[s] || '#000';
+      const fg = isLightColor(bg) ? '#18181b' : '#fafafa';
+      const matched = s === matchedShade ? 'matched' : '';
+      return `<div class="shade-block ${matched}" style="background:${bg};color:${fg}">${s}</div>`;
+    })
+    .join('');
 }
 
 function renderBlendViz(result: ReturnType<typeof ditto.generate>, inputColor: string) {
   blendViz.innerHTML = '';
   const shades = getShades();
   const shadeIndex = shades.indexOf(result.matchedShade);
-  const shadeX = (shadeIndex + 0.5) / shades.length * 100;
+  const shadeX = ((shadeIndex + 0.5) / shades.length) * 100;
 
   if (result.method === 'blend' && result.sources.length === 2) {
     const [src1, src2] = result.sources;
@@ -111,7 +113,6 @@ function renderBlendViz(result: ReturnType<typeof ditto.generate>, inputColor: s
       <div class="ramp-bar">${renderRampBar(src2.name, result.matchedShade)}</div>
     `;
     blendViz.appendChild(row2);
-
   } else {
     const src = result.sources[0];
     const row = document.createElement('div');
@@ -144,19 +145,21 @@ function sanitizeName(name: string): string {
 
 let nameFetchTimeout: any;
 
-async function fetchAndApplyName(color: string, result: ReturnType<typeof ditto.generate>) {
+async function fetchAndApplyName(result: ReturnType<typeof ditto.generate>) {
   try {
     const shades = getShades();
     const middleShade = shades[Math.floor((shades.length - 1) / 2)];
     const middleColor = result.scale[middleShade];
-    
+
     if (!middleColor) return;
 
     const hex = formatHex(middleColor).replace('#', '');
-    const response = await fetch(`https://api.color.pizza/v1/?values=${hex}&list=bestOf&noduplicates=true`);
+    const response = await fetch(
+      `https://api.color.pizza/v1/?values=${hex}&list=bestOf&noduplicates=true`
+    );
     const data = await response.json();
     const name = data.colors?.[0]?.name;
-    
+
     if (name) {
       const safeName = sanitizeName(name);
       paletteTitle.textContent = `Generated Palette: ${name}`;
@@ -175,15 +178,19 @@ function updatePalette(color: string) {
     methodBadge.textContent = result.method;
     methodBadge.className = `method-badge method-${result.method}`;
 
-    rampInfo.innerHTML = result.sources
-      .map(r => `<span class="ramp-name">${r.name}</span> <span class="ramp-weight">(${(r.weight * 100).toFixed(0)}%)</span>`)
-      .join(' + ') + ` @ shade <strong>${result.matchedShade}</strong>`;
+    rampInfo.innerHTML =
+      result.sources
+        .map(
+          (r) =>
+            `<span class="ramp-name">${r.name}</span> <span class="ramp-weight">(${(r.weight * 100).toFixed(0)}%)</span>`
+        )
+        .join(' + ') + ` @ shade <strong>${result.matchedShade}</strong>`;
 
     renderBlendViz(result, color);
 
     // Update grid columns based on shade count
     paletteGrid.style.gridTemplateColumns = `repeat(${shades.length}, 1fr)`;
-    
+
     paletteGrid.innerHTML = '';
     for (const shade of shades) {
       const oklchColor = result.scale[shade];
@@ -206,13 +213,12 @@ function updatePalette(color: string) {
     }
 
     cssOutput.textContent = toCSS(result, 'brand');
-    
+
     // Debounce name fetching
     if (nameFetchTimeout) clearTimeout(nameFetchTimeout);
     nameFetchTimeout = setTimeout(() => {
-      fetchAndApplyName(color, result);
+      fetchAndApplyName(result);
     }, 100);
-
   } catch (e) {
     console.error(e);
   }
