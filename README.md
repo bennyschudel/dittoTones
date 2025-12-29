@@ -12,8 +12,7 @@ Most palette generators for popular frameworks either match a single color or ig
        Input Color
            │
            ▼
-   1. Find Neighbors
-      (in Oklch)
+   Find Neighbor Ramps
            │
     ┌──────┴──────┐
     ▼             ▼
@@ -26,11 +25,11 @@ Most palette generators for popular frameworks either match a single color or ig
     └──────┬──────┘
            │
            ▼
-   2. Blend Curves
+     Blend Curves
       (Weighted)
            │
            ▼
-    3. Apply Hue
+       Apply Hue
            │
            ▼
    Generated Palette
