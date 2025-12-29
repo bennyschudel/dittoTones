@@ -36,7 +36,7 @@
         --c-grey: #a1a1a1;
         --c-white: #fafafa;
         --c-red: tomato;
-        --c-green: mediumspringgreen;
+        --c-green: rgb(67, 164, 133);
 
         --c-text: var(--c-grey);
         --c-text-alt: var(--c-white);
@@ -52,6 +52,18 @@
 
       a, button, select, input {
         color: var(--c-interactive);
+      }
+
+
+      a {
+        color: var(--c-text-alt);
+        text-decoration: underline;
+        text-decoration-color: var(--c-hightlight);
+        text-underline-offset: 2px;
+        text-decoration-thickness: 1px;
+      }
+      a:hover {
+        color: var(--c-hightlight);
       }
 
       ::selection {
@@ -106,6 +118,7 @@
       }
       h2 {
         color: var(--c-text-alt);
+        letter-spacing: -0.025em;
       }
       .subtitle {
         margin-bottom: 2rem;
@@ -122,24 +135,26 @@
         align-items: center;
         gap: 1.5rem;
         flex-wrap: wrap;
+        
       }
       .color-input-wrapper {
         display: flex;
         align-items: center;
       }
       input[type='color'] {
-        width: 49px;
-        height: 49px;
+        width: 55px;
+        height: 55px;
         border: none;
         cursor: pointer;
         background: transparent;
         margin-right: -1px;
+        border-radius: 0;
       }
       input[type='color']::-webkit-color-swatch-wrapper {
         padding: 0;
       }
       input[type='color']::-webkit-color-swatch {
-        border: 1px solid #3f3f46;
+        border: none;
       }
       .hex-input {
         background: #27272a;
@@ -162,27 +177,28 @@
         display: inline-block;
         padding: 0.25rem 0.75rem;
         border-radius: 9999px;
-        font-size: 0.75rem;
+        font-size: 0.65rem;
         text-transform: uppercase;
         letter-spacing: 0.05em;
         margin-bottom: 0.45rem;
       }
       .method-exact {
-        background: #166534;
-        color: #bbf7d0;
+        background: var(--c-green);
+        color: var(--c-black);
       }
       .method-single {
         background: #1e40af;
         color: #bfdbfe;
       }
       .method-blend {
-        background: #7c2d12;
-        color: #fed7aa;
+        background: var(--c-hightlight);
+        color: var(--c-white);
       }
       .ramp-info {
         font-size: 0.9rem;
       }
       .ramp-name {
+        color: var(--c-text-alt);
       }
       .ramp-weight {
         color: #a855f7;
@@ -192,13 +208,13 @@
         background: #27272a;
         border: 1px solid #3f3f46;
         padding: 0.5rem 1rem;
-        color: #fafafa;
+        color: var(--c-text-alt);
         font-size: 0.9rem;
         cursor: pointer;
       }
       .ramp-selector:focus {
         outline: none;
-        border-color: #a855f7;
+        border-color: var(--c-hightlight);
       }
 
       .blend-section {
@@ -217,16 +233,16 @@
       .ramp-row {
         display: flex;
         align-items: center;
-        gap: 1rem;
       }
       .ramp-label {
-        width: 100px;
+        width: var(--s-inset);
         font-size: 0.85rem;
         text-align: right;
         flex-shrink: 0;
+        padding-right: 1rem;
       }
       .ramp-label .weight {
-        color: #a855f7;
+        color: var(--c-hightlight);
         font-size: 0.8rem;
         font-family: var(--font-input);
       }
@@ -240,7 +256,8 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 0.6rem;
+        font-size: .9rem;
+        line-height: 1;
       }
       .ramp-bar .shade-block.matched {
         z-index: 1;
@@ -279,14 +296,15 @@
         gap: 0rem;
       }
       .shade {
-        aspect-ratio: 1;
+        padding-top: 100%;
         font-size: 0.7rem;
         cursor: pointer;
         transition: transform 0.15s;
         position: relative;
       }
       .shade__label {
-        background: #fff;
+        background: var(--c-text-alt);
+        color: var(--c-bg);
         position: absolute;
         bottom: 2px;
         left: 2px;
@@ -294,6 +312,7 @@
         display: flex;
         flex-direction: column;
         padding: 0.3rem 0.5rem;
+        line-height: 1.1;
       }
 
       .shade:hover,
@@ -380,19 +399,12 @@
           white-space: nowrap;
           letter-spacing: 0;
       }
-      .github-link {
-        color: inherit;
-        text-decoration: underline;
-        text-decoration-color: #a855f7;
-        text-underline-offset: 2px;
-      }
-      .github-link:hover {
-        color: #a855f7;
-      }
       .description {
         max-width: 50ch;
+        margin-top: 2em;
         margin-bottom: 2rem;
         line-height: 1.5;
+        margin-left: var(--s-inset);
       }
     </style>
   </head>
