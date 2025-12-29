@@ -16,6 +16,7 @@ const rampInfo = document.getElementById('rampInfo')!;
 const blendViz = document.getElementById('blendViz')!;
 const paletteGrid = document.getElementById('paletteGrid')!;
 const cssOutput = document.getElementById('cssOutput')!;
+const paletteTitle = document.getElementById('paletteTitle')!;
 const copyBtn = document.getElementById('copyBtn')!;
 const toast = document.getElementById('toast')!;
 
@@ -134,6 +135,38 @@ function renderBlendViz(result: ReturnType<typeof ditto.generate>, inputColor: s
   }
 }
 
+function sanitizeName(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+let nameFetchTimeout: any;
+
+async function fetchAndApplyName(color: string, result: ReturnType<typeof ditto.generate>) {
+  try {
+    const shades = getShades();
+    const middleShade = shades[Math.floor((shades.length - 1) / 2)];
+    const middleColor = result.scale[middleShade];
+    
+    if (!middleColor) return;
+
+    const hex = formatHex(middleColor).replace('#', '');
+    const response = await fetch(`https://api.color.pizza/v1/?values=${hex}&list=bestOf&noduplicates=true`);
+    const data = await response.json();
+    const name = data.colors?.[0]?.name;
+    
+    if (name) {
+      const safeName = sanitizeName(name);
+      paletteTitle.textContent = `Generated Palette: ${name}`;
+      cssOutput.textContent = toCSS(result, safeName);
+    }
+  } catch (e) {
+    console.error('Failed to fetch color name', e);
+  }
+}
+
 function updatePalette(color: string) {
   try {
     const result = ditto.generate(color);
@@ -173,6 +206,13 @@ function updatePalette(color: string) {
     }
 
     cssOutput.textContent = toCSS(result, 'brand');
+    
+    // Debounce name fetching
+    if (nameFetchTimeout) clearTimeout(nameFetchTimeout);
+    nameFetchTimeout = setTimeout(() => {
+      fetchAndApplyName(color, result);
+    }, 100);
+
   } catch (e) {
     console.error(e);
   }

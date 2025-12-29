@@ -97,6 +97,10 @@ npm run preview # Preview the demo build
 
 - ESM-only package (`"type": "module"`).
 
+## Credits
+
+Built with [Culori](https://culorijs.org/) for color math and interpolation.
+
 ## License
 
 MIT
